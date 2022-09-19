@@ -21,42 +21,42 @@ public class Driver {
 //     @Autowired
      Warehouse warehouse;
 
-     public int transport() {
-         while (!checkWarehouse()) {
-             while (!checkWarehouse() && !checkTruck()) {
-                 Box box = takeBox();
-                 while (!checkWarehouse() && !check(box)) {
-                     PieceOfLuck pieceOfLuck = takePL();
-                     put(pieceOfLuck,box);
-                 }
-                 put(box);
-             }
-             drive();
-             tellManager();
-         }
-         return alert();
-     }
-//    public int transport() {
-//        do {
-//            do {
-//                Box box = takeBox();
-//                do {
-//                    PieceOfLuck pieceOfLuck = takePL();
-//                    put(pieceOfLuck, box);
-//                    if (checkWarehouse()) {
-//                        break;
-//                    }
-//                }
-//                while (!check(box) && !checkWarehouse());
-//                put(box);
-//            }
-//            while (!checkTruck() && !checkWarehouse());
-//            drive();
-//            tellManager();
-//        }
-//        while (!checkWarehouse());
-//        return alert();
-//    }
+//     public int transport() {
+//         while (!checkWarehouse()) {
+//             while (!checkWarehouse() && !checkTruck()) {
+//                 Box box = takeBox();
+//                 while (!checkWarehouse() && !check(box)) {
+//                     PieceOfLuck pieceOfLuck = takePL();
+//                     put(pieceOfLuck,box);
+//                 }
+//                 put(box);
+//             }
+//             drive();
+//             tellManager();
+//         }
+//         return alert();
+//     }
+    public int transport() {
+        do {
+            do {
+                Box box = takeBox();
+                do {
+                    PieceOfLuck pieceOfLuck = takePL();
+                    put(pieceOfLuck, box);
+                    if (checkWarehouse()) {
+                        break;
+                    }
+                }
+                while (!check(box) && !checkWarehouse());
+                put(box);
+            }
+            while (!checkTruck() && !checkWarehouse());
+            drive();
+            tellManager();
+        }
+        while (!checkWarehouse());
+        return alert();
+    }
 
     private int alert() {
         return warehouse.getManager().toSumUp(this);
