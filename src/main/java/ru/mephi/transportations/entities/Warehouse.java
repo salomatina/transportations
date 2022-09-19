@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 @Getter
 @Setter
-@Component
+//@Component
 public class Warehouse {
 
-    @Autowired
+    public Warehouse(Manager manager) {
+        this.manager = manager;
+    }
+
+//    @Autowired
     private Manager manager;
 
     private int numberOfPieces = 10591;

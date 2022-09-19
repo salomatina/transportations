@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
-@Component
+//@Component
 public class Truck {
 
     private int numberOfBoxes;
@@ -18,8 +18,8 @@ public class Truck {
     }
 
     public void decrement() {
-        numberOfBoxes--;
-        spaceAvailable++;
+        numberOfBoxes -= 10;
+        spaceAvailable += 10;
     }
 
     public boolean isEmpty() {

@@ -6,39 +6,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 @Getter
 @Setter
-@Component
+//@Component
 public class Driver {
-     @Autowired
+
+    public Driver(Truck truck, Warehouse warehouse) {
+        this.truck = truck;
+        this.warehouse = warehouse;
+    }
+//     @Autowired
      private Truck truck;
 
      private int numberOfRides;
 
-     @Autowired
+//     @Autowired
      Warehouse warehouse;
-    public int transport() {
-        do {
-            do {
-                Box box = takeBox();
-                do {
-                    PieceOfLuck pieceOfLuck = takePL();
-                    put(pieceOfLuck, box);
-                    if (checkWarehouse()) {
-                        break;
-                    }
-                }
-                while (!check(box));
-                put(box);
-            }
-            while (!checkTruck());
-            drive();
-            tellManager();
-        }
-        while (!checkWarehouse());
-        return alert();
-    }
+
+     public int transport() {
+         while (!checkWarehouse()) {
+             while (!checkWarehouse() && !checkTruck()) {
+                 Box box = takeBox();
+                 while (!checkWarehouse() && !check(box)) {
+                     PieceOfLuck pieceOfLuck = takePL();
+                     put(pieceOfLuck,box);
+                 }
+                 put(box);
+             }
+             drive();
+             tellManager();
+         }
+         return alert();
+     }
+//    public int transport() {
+//        do {
+//            do {
+//                Box box = takeBox();
+//                do {
+//                    PieceOfLuck pieceOfLuck = takePL();
+//                    put(pieceOfLuck, box);
+//                    if (checkWarehouse()) {
+//                        break;
+//                    }
+//                }
+//                while (!check(box) && !checkWarehouse());
+//                put(box);
+//            }
+//            while (!checkTruck() && !checkWarehouse());
+//            drive();
+//            tellManager();
+//        }
+//        while (!checkWarehouse());
+//        return alert();
+//    }
 
     private int alert() {
-        return warehouse.getManager().toSumUp();
+        return warehouse.getManager().toSumUp(this);
     }
 
     public boolean checkWarehouse() {
@@ -77,6 +98,6 @@ public class Driver {
     }
 
     public void tellManager() {
-        warehouse.getManager().doChecking();
+        warehouse.getManager().doChecking(warehouse, this);
     }
 }
