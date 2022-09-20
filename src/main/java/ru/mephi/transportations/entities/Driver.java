@@ -2,102 +2,86 @@ package ru.mephi.transportations.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
 @Getter
 @Setter
 //@Component
 public class Driver {
 
-    public Driver(Truck truck, Warehouse warehouse) {
+    public Driver(Truck truck) {
         this.truck = truck;
-        this.warehouse = warehouse;
     }
-//     @Autowired
-     private Truck truck;
 
-     private int numberOfRides;
+    //     @Autowired
+    private Truck truck;
 
-//     @Autowired
-     Warehouse warehouse;
+    private int numberOfRides;
 
-//     public int transport() {
-//         while (!checkWarehouse()) {
-//             while (!checkWarehouse() && !checkTruck()) {
-//                 Box box = takeBox();
-//                 while (!checkWarehouse() && !check(box)) {
-//                     PieceOfLuck pieceOfLuck = takePL();
-//                     put(pieceOfLuck,box);
-//                 }
-//                 put(box);
-//             }
-//             drive();
-//             tellManager();
-//         }
-//         return alert();
-//     }
-    public int transport() {
+    public void transport(Warehouse warehouse, Manager manager) {
+        //while truck isn't full and there are pieces left in the warehouse
+        //driver takes boxes to put pieces in them
         do {
+            Box box = getBox(warehouse);
+            System.out.printf("Box number %d was taken", truck.getFullness() + 1);
+            System.out.println();
+            //while box isn't full and there are pieces left in the warehouse
+            //driver takes pieces from the warehouse and places them in the box
             do {
-                Box box = takeBox();
-                do {
-                    PieceOfLuck pieceOfLuck = takePL();
-                    put(pieceOfLuck, box);
-                    if (checkWarehouse()) {
-                        break;
-                    }
-                }
-                while (!check(box) && !checkWarehouse());
-                put(box);
+                PieceOfLuck pieceOfLuck = getPieceOfLuck(warehouse);
+                putInBox(box, pieceOfLuck);
+                System.out.printf("There are %d pieces in the box now", box.getNumberOfPieces());
+                System.out.println();
             }
-            while (!checkTruck() && !checkWarehouse());
-            drive();
-            tellManager();
+            while (boxIsNotFull(box) && warehouseIsNotEmpty(warehouse));
+            putInTruck(box);
+            System.out.printf("Loaded %d/10 boxes", truck.getFullness());
+            System.out.println();
         }
-        while (!checkWarehouse());
-        return alert();
+        while (truckIsNotFull() && warehouseIsNotEmpty(warehouse));
+        System.out.println("Driver is ready to drive");
+        drive(warehouse);
+        informManager(manager, warehouse);
     }
 
-    private int alert() {
-        return warehouse.getManager().toSumUp(this);
+    public boolean warehouseIsNotEmpty(Warehouse warehouse) {
+        return warehouse.isNotEmpty();
     }
 
-    public boolean checkWarehouse() {
-        return warehouse.isEmpty();
+    public boolean truckIsNotFull() {
+        return truck.isNotFull();
     }
 
-    public boolean checkTruck() {
-        return truck.isFull();
-    }
-
-    public Box takeBox() {
+    public Box getBox(Warehouse warehouse) {
         return warehouse.giveBox();
     }
 
-    public boolean check(Box box) {
-        return box.isFull();
+    public boolean boxIsNotFull(Box box) {
+        return box.isNotFull();
     }
 
-    public PieceOfLuck takePL() {
+    public PieceOfLuck getPieceOfLuck(Warehouse warehouse) {
         return warehouse.givePL();
     }
 
-    public void put(PieceOfLuck pieceOfLuck, Box box) {
-        box.increment();
+    public void putInBox(Box box, PieceOfLuck pieceOfLuck) {
+        box.load(pieceOfLuck);
     }
 
-    public void put(Box box) {
-        truck.increment();
+    public void putInTruck(Box box) {
+        truck.load(box);
     }
 
-    public void drive() {
-        while (!truck.isEmpty()) {
-            truck.decrement();
-            numberOfRides++;
+    public void drive(Warehouse warehouse) {
+        //Freeing up space in the truck
+        while (truck.isNotEmpty()) {
+            truck.offload();
         }
+        numberOfRides++;
+        System.out.printf("Transportation number %d was made. Number of pieces left: %d", numberOfRides, warehouse.getNumberOfPieces());
+        System.out.println();
     }
 
-    public void tellManager() {
-        warehouse.getManager().doChecking(warehouse, this);
+    public void informManager(Manager manager, Warehouse warehouse) {
+        manager.doChecking(warehouse, this);
     }
 }

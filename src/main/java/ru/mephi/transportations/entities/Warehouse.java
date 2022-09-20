@@ -9,17 +9,10 @@ import org.springframework.stereotype.Component;
 //@Component
 public class Warehouse {
 
-    public Warehouse(Manager manager) {
-        this.manager = manager;
-    }
-
-//    @Autowired
-    private Manager manager;
-
     private int numberOfPieces = 10591;
 
-    public boolean isEmpty() {
-        return numberOfPieces == 0;
+    public boolean isNotEmpty() {
+        return numberOfPieces != 0;
     }
 
     public Box giveBox() {
@@ -33,5 +26,7 @@ public class Warehouse {
 
     public void increment() {
         numberOfPieces += 112;
+        System.out.printf("Pieces have been increased to %d", numberOfPieces);
+        System.out.println();
     }
 }

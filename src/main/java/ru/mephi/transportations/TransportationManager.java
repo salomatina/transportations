@@ -10,15 +10,17 @@ import ru.mephi.transportations.entities.Warehouse;
 
 //@Service
 public class TransportationManager {
-//    @Autowired
-//    private Manager manager;
 
-    public int run() {
+    public void run() {
         Manager manager = new Manager();
-        Warehouse warehouse = new Warehouse(manager);
+        Warehouse warehouse = new Warehouse();
         Truck truck = new Truck();
-        Driver driver = new Driver(truck,warehouse);
-        return manager.orderToTransport(driver);
+        Driver driver = new Driver(truck);
+        while (warehouse.isNotEmpty()) {
+            manager.orderToTransport(warehouse, driver);
+        }
+        int result = manager.getResult(driver);
+        System.out.printf("All the pieces have been moved in %d rides", result);
     }
 
 }

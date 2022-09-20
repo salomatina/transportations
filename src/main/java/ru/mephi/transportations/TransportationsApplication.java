@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TransportationsApplication {
     public static void main(String[] args) {
         SpringApplication.run(TransportationsApplication.class, args);
-        System.out.println(new TransportationManager().run());
+        TransportationManager transportationManager = new TransportationManager();
+        transportationManager.run();
+        System.out.println();
     }
 
 }

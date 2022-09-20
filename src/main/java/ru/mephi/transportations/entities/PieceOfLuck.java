@@ -1,4 +1,10 @@
 package ru.mephi.transportations.entities;
 
-public class PieceOfLuck {
+import ru.mephi.transportations.IntegerValue;
+
+public class PieceOfLuck implements IntegerValue {
+    @Override
+    public int value() {
+        return 1;
+    }
 }

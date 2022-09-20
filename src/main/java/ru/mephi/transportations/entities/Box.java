@@ -1,14 +1,22 @@
 package ru.mephi.transportations.entities;
 
-public class Box {
+import lombok.Getter;
+import ru.mephi.transportations.IntegerValue;
+@Getter
+public class Box implements IntegerValue {
     private int numberOfPieces;
+    private final int capacity = 4;
 
-    public boolean isFull() {
-        return numberOfPieces >= 4;
+    public boolean isNotFull() {
+        return numberOfPieces < capacity;
     }
 
-    public void increment() {
-        numberOfPieces++;
+    public void load(PieceOfLuck pieceOfLuck) {
+        numberOfPieces += pieceOfLuck.value();
     }
 
+    @Override
+    public int value() {
+        return 1;
+    }
 }

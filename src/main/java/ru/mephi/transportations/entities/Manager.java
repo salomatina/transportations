@@ -11,17 +11,8 @@ import org.springframework.stereotype.Service;
 @Setter
 public class Manager {
 
-//    public Manager(Driver driver) {
-//        this.driver = driver;
-////        this.warehouse = warehouse;
-//    }
-//    @Autowired
-//    private Driver driver;
-//    @Autowired
-//    private Warehouse warehouse;
-
-    public int orderToTransport(Driver driver) {
-        return driver.transport();
+    public void orderToTransport(Warehouse warehouse, Driver driver) {
+        driver.transport(warehouse, this);
     }
 
     public void doChecking(Warehouse warehouse, Driver driver) {
@@ -35,7 +26,7 @@ public class Manager {
         warehouse.increment();
     }
 
-    public int toSumUp(Driver driver) {
+    public int getResult(Driver driver) {
         return driver.getNumberOfRides();
     }
 

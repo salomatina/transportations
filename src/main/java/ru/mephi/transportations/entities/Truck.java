@@ -2,31 +2,31 @@ package ru.mephi.transportations.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 //@Component
 public class Truck {
 
-    private int numberOfBoxes;
+    private int fullness;
 
-    private int spaceAvailable = 10;
-    public void increment() {
-        numberOfBoxes++;
-        spaceAvailable--;
+    private int capacity = 10;
+
+    public void load(Box box) {
+        fullness += box.value();
+        capacity -= box.value();
     }
 
-    public void decrement() {
-        numberOfBoxes -= 10;
-        spaceAvailable += 10;
+    public void offload() {
+        fullness--;
+        capacity++;
     }
 
-    public boolean isEmpty() {
-        return numberOfBoxes == 0;
+    public boolean isNotEmpty() {
+        return fullness != 0;
     }
 
-    public boolean isFull() {
-        return spaceAvailable == 0;
+    public boolean isNotFull() {
+        return capacity != 0;
     }
 }
