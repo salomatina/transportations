@@ -2,31 +2,65 @@ package ru.mephi.transportations.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 @Getter
 @Setter
-//@Component
 public class Warehouse {
 
-    private int numberOfPieces = 10591;
+    private int numberOfPieces;
+    private File file;
+
+    public Warehouse() throws FileNotFoundException {
+        initializeData();
+        numberOfPieces = readData();
+    }
 
     public boolean isNotEmpty() {
         return numberOfPieces != 0;
     }
 
-    public Box giveBox() {
+    public Box getBox() {
         return new Box();
     }
 
-    public PieceOfLuck givePL() {
+    public PieceOfLuck getPieceOfLuck() {
         numberOfPieces--;
         return new PieceOfLuck();
     }
 
-    public void increment() {
+    public void increment() throws FileNotFoundException {
         numberOfPieces += 112;
-        System.out.printf("Pieces have been increased to %d", numberOfPieces);
-        System.out.println();
+        writeData(numberOfPieces);
+        System.out.printf("Pieces have been increased to %d\n", numberOfPieces);
+    }
+
+    public void removeData() throws FileNotFoundException {
+        PrintWriter writer = new PrintWriter(file);
+        writer.print("");
+        writer.close();
+    }
+
+    public void writeData(int numberOfPieces) throws FileNotFoundException {
+        removeData();
+        PrintWriter writer = new PrintWriter(file);
+        writer.print(numberOfPieces);
+        writer.close();
+    }
+    public int readData() throws FileNotFoundException {
+        Scanner input = new Scanner(file);
+        return input.nextInt();
+    }
+
+    public void initializeData() throws FileNotFoundException {
+        file = new File("src/main/resources/warehouse.txt");
+        removeData();
+        PrintWriter writer = new PrintWriter(file);
+        writer.print(10591);
+        writer.close();
     }
 }

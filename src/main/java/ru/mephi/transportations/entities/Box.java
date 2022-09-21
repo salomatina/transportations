@@ -8,7 +8,7 @@ public class Box implements IntegerValue {
     private final int capacity = 4;
 
     public boolean isNotFull() {
-        return numberOfPieces < capacity;
+        return numberOfPieces != capacity;
     }
 
     public void load(PieceOfLuck pieceOfLuck) {

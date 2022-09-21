@@ -2,27 +2,24 @@ package ru.mephi.transportations.entities;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-//@Component
+import java.io.FileNotFoundException;
+
 @Getter
 @Setter
 public class Manager {
 
-    public void orderToTransport(Warehouse warehouse, Driver driver) {
-        driver.transport(warehouse, this);
+    public void orderToTransport(Driver driver, Warehouse warehouse) {
+        driver.transport(warehouse);
     }
 
-    public void doChecking(Warehouse warehouse, Driver driver) {
-        int numberOfRides = driver.getNumberOfRides();
+    public void incrementIfNeeded(Warehouse warehouse, int numberOfRides) throws FileNotFoundException {
         if (numberOfRides % 5 == 0) {
-            alert(warehouse);
+            inform(warehouse);
         }
     }
 
-    public void alert(Warehouse warehouse) {
+    public void inform(Warehouse warehouse) throws FileNotFoundException {
         warehouse.increment();
     }
 

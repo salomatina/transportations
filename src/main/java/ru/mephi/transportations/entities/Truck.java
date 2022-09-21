@@ -5,28 +5,24 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//@Component
 public class Truck {
 
-    private int fullness;
-
-    private int capacity = 10;
+    private int occupancy;
+    private final int capacity = 10;
 
     public void load(Box box) {
-        fullness += box.value();
-        capacity -= box.value();
+        occupancy += box.value();
     }
 
     public void offload() {
-        fullness--;
-        capacity++;
+        occupancy--;
     }
 
     public boolean isNotEmpty() {
-        return fullness != 0;
+        return occupancy != 0;
     }
 
     public boolean isNotFull() {
-        return capacity != 0;
+        return occupancy != capacity;
     }
 }

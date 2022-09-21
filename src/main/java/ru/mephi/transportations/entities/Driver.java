@@ -5,42 +5,35 @@ import lombok.Setter;
 
 @Getter
 @Setter
-//@Component
 public class Driver {
 
     public Driver(Truck truck) {
         this.truck = truck;
     }
 
-    //     @Autowired
     private Truck truck;
-
     private int numberOfRides;
 
-    public void transport(Warehouse warehouse, Manager manager) {
+    public void transport(Warehouse warehouse) {
         //while truck isn't full and there are pieces left in the warehouse
         //driver takes boxes to put pieces in them
         do {
             Box box = getBox(warehouse);
-            System.out.printf("Box number %d was taken", truck.getFullness() + 1);
-            System.out.println();
+            System.out.printf("Box number %d was taken\n", truck.getOccupancy() + 1);
             //while box isn't full and there are pieces left in the warehouse
             //driver takes pieces from the warehouse and places them in the box
             do {
                 PieceOfLuck pieceOfLuck = getPieceOfLuck(warehouse);
                 putInBox(box, pieceOfLuck);
-                System.out.printf("There are %d pieces in the box now", box.getNumberOfPieces());
-                System.out.println();
+                System.out.printf("There are %d pieces in the box now\n", box.getNumberOfPieces());
             }
             while (boxIsNotFull(box) && warehouseIsNotEmpty(warehouse));
             putInTruck(box);
-            System.out.printf("Loaded %d/10 boxes", truck.getFullness());
-            System.out.println();
+            System.out.printf("Loaded %d/10 boxes\n", truck.getOccupancy());
         }
         while (truckIsNotFull() && warehouseIsNotEmpty(warehouse));
         System.out.println("Driver is ready to drive");
         drive(warehouse);
-        informManager(manager, warehouse);
     }
 
     public boolean warehouseIsNotEmpty(Warehouse warehouse) {
@@ -52,7 +45,7 @@ public class Driver {
     }
 
     public Box getBox(Warehouse warehouse) {
-        return warehouse.giveBox();
+        return warehouse.getBox();
     }
 
     public boolean boxIsNotFull(Box box) {
@@ -60,7 +53,7 @@ public class Driver {
     }
 
     public PieceOfLuck getPieceOfLuck(Warehouse warehouse) {
-        return warehouse.givePL();
+        return warehouse.getPieceOfLuck();
     }
 
     public void putInBox(Box box, PieceOfLuck pieceOfLuck) {
@@ -77,11 +70,7 @@ public class Driver {
             truck.offload();
         }
         numberOfRides++;
-        System.out.printf("Transportation number %d was made. Number of pieces left: %d", numberOfRides, warehouse.getNumberOfPieces());
-        System.out.println();
+        System.out.printf("Transportation number %d was made. Number of pieces left: %d\n", numberOfRides, warehouse.getNumberOfPieces());
     }
 
-    public void informManager(Manager manager, Warehouse warehouse) {
-        manager.doChecking(warehouse, this);
-    }
 }
